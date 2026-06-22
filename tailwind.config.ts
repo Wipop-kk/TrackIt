@@ -10,6 +10,11 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        heading: ["'Space Grotesk'", "sans-serif"],
+        body: ["'Inter'", "sans-serif"],
+        mono: ["'JetBrains Mono'", "monospace"],
+      },
       colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
@@ -44,6 +49,18 @@ export default {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
+
+        // TrackIt semantic colors
+        "court-green": "hsl(var(--court-green))",
+        "court-green-light": "hsl(var(--court-green-light))",
+        "court-line": "hsl(var(--court-line))",
+        shuttlecock: "hsl(var(--shuttlecock))",
+        "shuttlecock-light": "hsl(var(--shuttlecock-light))",
+        "over-limit": "hsl(var(--over-limit))",
+        chalk: "hsl(var(--chalk))",
+        success: "hsl(var(--success))",
+        warning: "hsl(var(--warning))",
+
         chart: {
           "1": "hsl(var(--chart-1))",
           "2": "hsl(var(--chart-2))",
@@ -56,6 +73,30 @@ export default {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      keyframes: {
+        "gauge-fill": {
+          "0%": { strokeDashoffset: "283" },
+          "100%": { strokeDashoffset: "var(--gauge-offset)" },
+        },
+        "bar-fill": {
+          "0%": { width: "0%" },
+          "100%": { width: "var(--bar-width)" },
+        },
+        "fade-in": {
+          "0%": { opacity: "0", transform: "translateY(4px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        "slide-up": {
+          "0%": { opacity: "0", transform: "translateY(10px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+      },
+      animation: {
+        "gauge-fill": "gauge-fill 0.8s ease-out forwards",
+        "bar-fill": "bar-fill 0.6s ease-out forwards",
+        "fade-in": "fade-in 0.3s ease-out",
+        "slide-up": "slide-up 0.4s ease-out",
       },
     },
   },
