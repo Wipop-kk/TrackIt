@@ -1,60 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
+  @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 3.9%;
+    /* ── Forma Colour Usage Summary (Light) ──────────────────── */
+    --background: 45 33% 95%;          /* #F6F4EE warm chalk white */
+    --foreground: 146 24% 11%;         /* #16241C primary text */
+
+    --card: 0 0% 100%;                 /* #FFFFFF pure white */
+    --card-foreground: 146 24% 11%;
+
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 3.9%;
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-    --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 89.8%;
-    --input: 0 0% 89.8%;
-    --ring: 0 0% 3.9%;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
-    --radius: 0.5rem;
+    --popover-foreground: 146 24% 11%;
+
+    --primary: 155 43% 18%;            /* #1B4332 court green */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 45 25% 92%;           /* #F0EDE4 inset surface */
+    --secondary-foreground: 155 43% 18%;
+
+    --muted: 45 25% 92%;               /* inset surface */
+    --muted-foreground: 135 5% 45%;    /* #6E7A71 secondary text */
+
+    --accent: 45 25% 92%;              /* inset surface */
+    --accent-foreground: 155 43% 18%;
+
+    --destructive: 12 73% 56%;         /* #E0603F coral red */
+    --destructive-foreground: 0 0% 100%;
+
+    /* Solid equivalent of rgba(27,67,50,0.14) over #F6F4EE */
+    --border: 155 15% 85%;
+    --input: 45 25% 92%;               /* inset surface */
+    --ring: 155 43% 18%;               /* court green */
+
+    /* ── TrackIt Semantic Colors ─────────────────────────── */
+    --court-green: 155 43% 18%;        /* #1B4332 */
+    --court-green-light: 155 43% 28%;  /* lighter hover */
+    --court-line: 155 15% 85%;         /* same as border */
+    --shuttlecock: 42 100% 65%;        /* #FFC94B yellow */
+    --shuttlecock-light: 42 100% 75%;
+    --over-limit: 12 73% 56%;          /* coral red */
+    --chalk: 45 33% 95%;               /* warm chalk */
+    --success: 151 43% 43%;            /* #3F9D6F good green */
+    --warning: 42 100% 65%;            /* yellow */
+
+    /* ── Chart Colors ────────────────────────────────────── */
+    --chart-1: 155 43% 18%;
+    --chart-2: 42 100% 65%;
+    --chart-3: 12 73% 56%;
+    --chart-4: 200 60% 50%;
+    --chart-5: 280 50% 55%;
+
+    --radius: 0.75rem;
   }
+
   .dark {
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-    --accent: 0 0% 14.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 0 0% 83.1%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
+    /* ── Forma Colour Usage Summary (Dark) ───────────────────── */
+    --background: 150 26% 7%;          /* #0E1813 near-black */
+    --foreground: 48 18% 91%;          /* #ECEAE2 primary text */
+
+    --card: 150 23% 12%;               /* #17251D pure white inverted */
+    --card-foreground: 48 18% 91%;
+
+    --popover: 150 23% 12%;
+    --popover-foreground: 48 18% 91%;
+
+    --primary: 150 43% 62%;            /* #74C69D mint green */
+    --primary-foreground: 150 26% 7%;
+
+    --secondary: 146 21% 15%;          /* #1F2F25 inset surface */
+    --secondary-foreground: 150 43% 62%;
+
+    --muted: 146 21% 15%;              /* inset surface */
+    --muted-foreground: 150 11% 60%;   /* #8FA59A secondary text */
+
+    --accent: 146 21% 15%;             /* inset surface */
+    --accent-foreground: 150 43% 62%;
+
+    --destructive: 13 100% 71%;        /* #FF8A6B coral red */
+    --destructive-foreground: 150 26% 7%;
+
+    /* Solid equivalent of rgba(116,198,157,0.14) over #0E1813 */
+    --border: 150 26% 15%;
+    --input: 146 21% 15%;              /* inset surface */
+    --ring: 150 43% 62%;               /* mint green */
+
+    /* ── TrackIt Semantic Colors (Dark) ──────────────────── */
+    --court-green: 150 43% 62%;        /* #74C69D */
+    --court-green-light: 150 43% 72%;
+    --court-line: 150 26% 15%;         /* same as border */
+    --shuttlecock: 43 100% 73%;        /* #FFD874 yellow */
+    --shuttlecock-light: 43 100% 83%;
+    --over-limit: 13 100% 71%;         /* coral red */
+    --chalk: 150 26% 7%;               /* near-black */
+    --success: 150 43% 62%;            /* mint green (merges with primary) */
+    --warning: 43 100% 73%;
+
+    /* ── Chart Colors (Dark) ─────────────────────────────── */
+    --chart-1: 150 43% 62%;
+    --chart-2: 43 100% 73%;
+    --chart-3: 13 100% 71%;
+    --chart-4: 200 60% 55%;
+    --chart-5: 280 50% 60%;
   }
 }
 
@@ -64,5 +114,31 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* ── Typography ──────────────────────────────────────────── */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', sans-serif;
+  }
+}
+
+@layer utilities {
+  /* Scoreboard-style numeric text */
+  .font-numeric {
+    font-family: 'JetBrains Mono', monospace;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
+
+  /* Court line divider (dashed) */
+  .court-divider {
+    @apply border-t-2 border-dashed;
+    border-color: hsl(var(--court-line) / 1);
+  }
+
+  /* Smooth transitions for theme switching */
+  .theme-transition {
+    @apply transition-colors duration-200 ease-in-out;
   }
 }
