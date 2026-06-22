@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
 
@@ -9,31 +8,44 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata: Metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "Next.js and Supabase Starter Kit",
-  description: "The fastest way to build apps with Next.js and Supabase",
+  title: "TrackIt",
+  description:
+    "Track your daily calories, macros, and weight with a badminton-inspired design. Set activity-based presets, log meals, monitor weight trends, and stay on top of your fitness goals.",
+  keywords: [
+    "nutrition tracker",
+    "calorie counter",
+    "macro tracker",
+    "fitness",
+    "weight tracker",
+    "diet",
+  ],
 };
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  display: "swap",
-  subsets: ["latin"],
-});
+import { cookies } from "next/headers";
+import { LanguageProvider } from "@/components/providers/LanguageProvider";
+import { type Locale } from "@/lib/i18n";
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = await cookies();
+  const localeCookie = cookieStore.get("NEXT_LOCALE")?.value as Locale | undefined;
+  const initialLocale: Locale = localeCookie === "en" ? "en" : "th";
+
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.className} antialiased`}>
+    <html lang={initialLocale} suppressHydrationWarning>
+      <body className="font-body antialiased">
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <LanguageProvider initialLocale={initialLocale}>
+            {children}
+          </LanguageProvider>
         </ThemeProvider>
       </body>
     </html>

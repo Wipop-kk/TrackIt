@@ -1,43 +1,116 @@
-import { redirect } from "next/navigation";
+"use client";
 
-import { createClient } from "@/lib/supabase/server";
-import { InfoIcon } from "lucide-react";
-import { FetchDataSteps } from "@/components/tutorial/fetch-data-steps";
-import { Suspense } from "react";
+import { useState, useMemo } from "react";
+import { Topbar } from "@/components/topbar/Topbar";
+import { DailySummary } from "@/components/dashboard/DailySummary";
+import { FoodLog } from "@/components/food-log/FoodLog";
+import { WeighIn } from "@/components/weigh-in/WeighIn";
+import { PresetManager } from "@/components/preset-manager/PresetManager";
+import { usePresets } from "@/hooks/usePresets";
+import { useDailyLog } from "@/hooks/useDailyLog";
+import { useMealEntries } from "@/hooks/useMealEntries";
+import { useWeightEntry } from "@/hooks/useWeightEntry";
+import { formatDateKey, getToday } from "@/lib/date-utils";
+import { calculateMealTotals } from "@/lib/calculations";
 
-async function UserDetails() {
-  const supabase = await createClient();
-  const { data, error } = await supabase.auth.getClaims();
+export default function TrackerPage() {
+  const [selectedDate, setSelectedDate] = useState<Date>(getToday());
+  const [presetManagerOpen, setPresetManagerOpen] = useState(false);
 
-  if (error || !data?.claims) {
-    redirect("/auth/login");
-  }
+  const dateKey = formatDateKey(selectedDate);
 
-  return JSON.stringify(data.claims, null, 2);
-}
+  // ── Data hooks ─────────────────────────────────────────
+  const { presets, loading: presetsLoading, getDefaultPreset, ...presetActions } = usePresets();
 
-export default function ProtectedPage() {
+  const defaultPreset = getDefaultPreset();
+
+  const { dailyLog, loading: logLoading, updatePreset: updateDayPreset } = useDailyLog(
+    dateKey,
+    defaultPreset?.id ?? null
+  );
+
+  const { meals, loading: mealsLoading, addMeal, updateMeal, deleteMeal } = useMealEntries(
+    dailyLog?.id ?? null
+  );
+
+  const { weight, loading: weightLoading, upsertWeight } = useWeightEntry(
+    dailyLog?.id ?? null
+  );
+
+  // ── Derived state ──────────────────────────────────────
+  const activePreset = useMemo(
+    () => presets.find((p) => p.id === dailyLog?.preset_id) ?? defaultPreset,
+    [presets, dailyLog?.preset_id, defaultPreset]
+  );
+  const totals = useMemo(() => calculateMealTotals(meals), [meals]);
+  const isLoading = presetsLoading || logLoading;
+
   return (
-    <div className="flex-1 w-full flex flex-col gap-12">
-      <div className="w-full">
-        <div className="bg-accent text-sm p-3 px-5 rounded-md text-foreground flex gap-3 items-center">
-          <InfoIcon size="16" strokeWidth={2} />
-          This is a protected page that you can only see as an authenticated
-          user
-        </div>
-      </div>
-      <div className="flex flex-col gap-2 items-start">
-        <h2 className="font-bold text-2xl mb-4">Your user details</h2>
-        <pre className="text-xs font-mono p-3 rounded border max-h-32 overflow-auto">
-          <Suspense>
-            <UserDetails />
-          </Suspense>
-        </pre>
-      </div>
-      <div>
-        <h2 className="font-bold text-2xl mb-4">Next steps</h2>
-        <FetchDataSteps />
-      </div>
-    </div>
+    <>
+      <Topbar
+        selectedDate={selectedDate}
+        onDateChange={setSelectedDate}
+        onOpenPresetManager={() => setPresetManagerOpen(true)}
+      />
+
+      <main className="max-w-5xl mx-auto px-4 py-6 grid grid-cols-1 md:grid-cols-12 gap-6">
+        {isLoading ? (
+          <div className="flex items-center justify-center py-20 md:col-span-12">
+            <div className="animate-spin rounded-full h-8 w-8 border-2 border-primary border-t-transparent" />
+          </div>
+        ) : (
+          <>
+            {/* Daily Summary — Gauge + Stats + Macros + Presets */}
+            <div className="md:col-span-12">
+              <DailySummary
+                preset={activePreset}
+                presets={presets}
+                totals={totals}
+                onPresetChange={updateDayPreset}
+                activeDayPresetId={dailyLog?.preset_id ?? null}
+              />
+            </div>
+
+            {/* Court line divider */}
+            <div className="court-divider md:col-span-12" />
+
+            {/* Food Log — Table + Quick Add */}
+            <div className="md:col-span-7 lg:col-span-7">
+              <FoodLog
+                meals={meals}
+                loading={mealsLoading}
+                onAddMeal={addMeal}
+                onUpdateMeal={updateMeal}
+                onDeleteMeal={deleteMeal}
+              />
+            </div>
+
+            {/* Court line divider */}
+            <div className="court-divider md:hidden" />
+
+            {/* Weigh-In — Inputs + Rolling Average */}
+            <div className="md:col-span-5 lg:col-span-5 h-fit">
+              <WeighIn
+                weight={weight}
+                loading={weightLoading}
+                onUpsertWeight={upsertWeight}
+                selectedDate={selectedDate}
+              />
+            </div>
+          </>
+        )}
+      </main>
+
+      {/* Preset Manager Modal */}
+      {presetManagerOpen && (
+        <PresetManager
+          presets={presets}
+          onClose={() => setPresetManagerOpen(false)}
+          onAdd={presetActions.addPreset}
+          onUpdate={presetActions.updatePreset}
+          onDelete={presetActions.deletePreset}
+        />
+      )}
+    </>
   );
 }
